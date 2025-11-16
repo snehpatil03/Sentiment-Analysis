@@ -90,7 +90,7 @@ APIs
 
 ⭐ AI Model API — Sentiment, keywords, mood
 
-📂 Project Structure
+Project Structure
 /
 ├── frontend/
 │   ├── src/

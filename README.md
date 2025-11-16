@@ -4,8 +4,8 @@ A full-stack web application that performs live speech transcription, extracts s
 
 This project demonstrates frontend + backend + AI orchestration in real-time.
 
-Features
-Live Speech Transcription
+🚀 Features
+🎤 Live Speech Transcription
 
 Streams microphone audio to Deepgram in real-time
 
@@ -13,7 +13,7 @@ Shows interim and final transcripts
 
 Smart VAD (voice activity detection)
 
-AI-Powered Sentiment & Mood Analysis
+🧠 AI-Powered Sentiment & Mood Analysis
 
 Extracts:
 
@@ -27,7 +27,7 @@ keywords[] (3–5 important topic keywords)
 
 Powered by AI model through a backend edge function
 
-Generative Visualization (p5.js)
+🌈 Generative Visualization (p5.js)
 
 Dynamic Perlin Noise "Aura"
 
@@ -41,7 +41,7 @@ Keywords → Density & glow
 
 Smooth transitions using interpolation
 
-Keywords Highlight
+💬 Keywords Highlight
 
 Animated keyword pills
 
@@ -49,7 +49,7 @@ First keyword gets a glowing badge
 
 Auto-fade and float-in animations
 
-Clear, Real-Time UI
+🧩 Clear, Real-Time UI
 
 Start/Stop button
 
@@ -59,7 +59,7 @@ Mood badge with emoji
 
 Analyzing shimmer when waiting for AI response
 
-Tech Stack
+🏗️ Tech Stack
 Frontend
 
 React + TypeScript
@@ -86,11 +86,11 @@ CORS-enabled
 
 APIs
 
-Deepgram — Transcription
+⭐ Deepgram — Transcription
 
-AI Model API — Sentiment, keywords, mood
+⭐ AI Model API — Sentiment, keywords, mood
 
-Project Structure
+📂 Project Structure
 /
 ├── frontend/
 │   ├── src/
@@ -113,23 +113,23 @@ Project Structure
 |
 └── README.md
 
-Local Development
-Backend
+🛠️ Local Development
+1️⃣ Backend
 cd backend
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 uvicorn app:app --reload --port 8000
 
-Frontend
+2️⃣ Frontend
 cd frontend
 npm install
 npm run dev
 
 
 Open:
-http://localhost:5173
+👉 http://localhost:5173
 
-How the Aura Visualization Works
+🌈 How the Aura Visualization Works
 Sentiment Label	Color
 Positive	Gold / Warm tones
 Neutral	Cyan / Teal
@@ -147,7 +147,7 @@ Glow effects
 
 Particle speed
 
-Example Outputs
+🧪 Example Outputs
 Input:
 
 “I feel really happy today, everything is going great!”
@@ -169,7 +169,7 @@ High energy
 
 Dense glowing lines
 
-What This Project Demonstrates
+🎯 What This Project Demonstrates
 
 ✔ Full-stack engineering
 ✔ Real-time async orchestration
@@ -189,10 +189,10 @@ Creative coding portfolios
 
 Showcasing AI + visualization skills
 
-License
+📄 License
 
 MIT License
 
-Author
+🙋‍♂️ Author
 
 Sneh Patil

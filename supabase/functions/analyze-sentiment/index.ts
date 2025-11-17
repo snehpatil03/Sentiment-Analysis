@@ -1,20 +1,6 @@
 /**
- * INTERVIEW NOTE: Sentiment Analysis Edge Function
- * 
- * Architecture: Serverless function deployed on Supabase Edge Runtime (Deno)
- * 
- * Purpose:
- * - Receives user transcript from frontend
- * - Calls Lovable AI Gateway (Gemini 2.5 Flash model)
- * - Uses structured output via function calling for guaranteed JSON
- * - Returns sentiment analysis: score, label, mood, keywords
- * 
- * Why Edge Function vs Client-Side?
- * 1. Security: API keys stay on server, never exposed to browser
- * 2. Rate limiting: Centralized control, user can't spam API
- * 3. Scalability: Auto-scales with traffic, no server management
- * 4. Flexibility: Easy to switch AI providers without frontend changes
- * 
+
+ * Architecture: Serverless function deployed on Supabase Edge Runtime 
  * Error Handling Strategy:
  * - Invalid input → Return neutral fallback
  * - Rate limits (429) → Return fallback with error message
@@ -57,7 +43,6 @@ serve(async (req) => {
       throw new Error("Invalid text input");
     }
 
-    // INTERVIEW NOTE: Lovable AI Gateway - Pre-configured LLM access
     // This is automatically provided in Lovable Cloud environments
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) {
@@ -67,7 +52,6 @@ serve(async (req) => {
 
     console.log("Analyzing text:", text);
 
-    // INTERVIEW NOTE: Using function calling for structured output
     // This forces the LLM to return valid JSON in exactly the format we need
     // Benefit: No parsing errors, guaranteed type safety
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -89,7 +73,6 @@ serve(async (req) => {
             content: text,
           },
         ],
-        // INTERVIEW NOTE: Function calling schema
         // This is OpenAI-compatible API format that works with Lovable AI Gateway
         tools: [
           {
@@ -141,7 +124,6 @@ serve(async (req) => {
       console.error("Lovable AI Gateway error:", response.status, response.statusText);
       console.error("Error details:", errorText);
       
-      // INTERVIEW NOTE: Graceful error handling with specific status codes
       
       // Rate limit (429): Too many requests
       if (response.status === 429) {
@@ -185,7 +167,6 @@ serve(async (req) => {
     const data = await response.json();
     console.log("Lovable AI response:", JSON.stringify(data));
 
-    // INTERVIEW NOTE: Extract the structured function call result
     // The LLM returns JSON in the tool_calls array, not in message.content
     const toolCall = data.choices?.[0]?.message?.tool_calls?.[0];
     if (!toolCall || toolCall.function.name !== "analyze_sentiment") {
@@ -208,8 +189,7 @@ serve(async (req) => {
     console.error("Error in analyze-sentiment function:", error);
     console.error("Error message:", error instanceof Error ? error.message : String(error));
     console.error("Error stack:", error instanceof Error ? error.stack : "No stack trace");
-
-    // INTERVIEW NOTE: Ultimate fallback - never let the frontend break
+    
     // Extract simple keywords from the original text as a heuristic
     let fallbackKeywords = ["analysis", "error"];
     if (text && typeof text === "string") {

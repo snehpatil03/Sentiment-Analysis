@@ -10,4 +10,3 @@ CREATE TABLE IF NOT EXISTS public._schema_init (
 ALTER TABLE public._schema_init ENABLE ROW LEVEL SECURITY;
 
 -- This is just a placeholder table to trigger the types generation
--- It can be safely ignored or removed later

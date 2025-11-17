@@ -26,7 +26,7 @@ interface AuraCanvasProps {
  * - KEYWORDS: Each keyword adds energy boost (more motion/thickness)
  * 
  * Technical Details:
- * - Uses lerp() for smooth 60fps transitions (no jarring jumps)
+ * - Uses lerp() for smooth 60fps transitions 
  * - Particles wrap at edges for continuous motion
  * - HSB color mode for intuitive hue shifts
  * - Canvas resizes responsively to window
@@ -39,11 +39,9 @@ export const AuraCanvas = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const p5InstanceRef = useRef<p5 | null>(null);
   
-  // INTERVIEW NOTE: Use refs to share state between React and p5.js render loop
-  // p5.js runs in its own animation frame, refs avoid stale closures
   const sentimentRef = useRef({ score: sentimentScore, label: sentimentLabel, keywords });
   
-  // Update refs when props change (triggered by sentiment analysis results)
+  // Update refs when props change 
   useEffect(() => {
     sentimentRef.current = { score: sentimentScore, label: sentimentLabel, keywords };
   }, [sentimentScore, sentimentLabel, keywords]);
@@ -59,7 +57,7 @@ export const AuraCanvas = ({
     let targetFlowSpeed = 0.002;
     let targetStrokeWeight = 2;
 
-    // Current values (will lerp to targets)
+    // Current values 
     let currentHue = targetHue;
     let currentSaturation = targetSaturation;
     let currentBrightness = targetBrightness;
@@ -207,8 +205,7 @@ export const AuraCanvas = ({
       };
     };
 
-    // INTERVIEW NOTE: Sentiment-to-Visual Mapping Function
-    // This is the core algorithm that translates emotional data into aesthetics
+  
     const updateVisualization = () => {
       const { label, keywords: kw } = sentimentRef.current;
       console.log("Updating visualization:", label, "Keywords:", kw.length);
@@ -239,8 +236,7 @@ export const AuraCanvas = ({
         targetStrokeWeight = 2;      // Standard trails
       }
 
-      // INTERVIEW NOTE: Keywords drive complexity
-      // More topics = more visual energy and detail
+    
       if (kw.length > 0) {
         targetEnergy += kw.length * 0.15;      // Each keyword adds motion
         targetStrokeWeight += kw.length * 0.25; // Each keyword thickens trails

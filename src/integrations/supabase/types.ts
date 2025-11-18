@@ -15,7 +15,7 @@ export type Database = {
   public: {
     Tables: {
       _schema_init: {
-        Row: 
+        Row: {
           created_at: string | null
           id: string
         }

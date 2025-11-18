@@ -1,198 +1,233 @@
-Sentiment Aura — Real-Time Speech Emotion Visualizer
+Sentiment Aura — Real-Time Speech Sentiment Visualization
+A full-stack real-time application that captures microphone audio, streams it to a transcription service, analyzes emotional sentiment + keywords via an AI model, and generates a live, reactive Perlin-noise “aura” visualization based on the user's mood.
 
-A full-stack web application that performs live speech transcription, extracts sentiment, mood, and keywords, and visualizes them using a generative Perlin-noise aura.
+This project satisfies all requirements from the Memory Machines Live AI-Powered "Sentiment Aura" challenge.
+It focuses on: full-stack orchestration, clean UI, real-time streaming, data-driven generative visuals, and robust async handling.
 
-This project demonstrates frontend + backend + AI orchestration in real-time.
+🚀 Demo Video 
+https://drive.google.com/file/d/1GXwCnS3Xus647uhCt8txLLgfcFvvkSTZ/view?usp=sharing
 
-🚀 Features
-🎤 Live Speech Transcription
+📌 Features
+🎤 1. Real-Time Speech Transcription
 
-Streams microphone audio to Deepgram in real-time
+Captures microphone audio using Web Audio API.
 
-Shows interim and final transcripts
+Streams raw PCM audio to Deepgram via WebSocket.
 
-Smart VAD (voice activity detection)
+Displays live rolling transcript (partial + final).
 
-🧠 AI-Powered Sentiment & Mood Analysis
+🧠 2. AI Sentiment + Keywords Extraction
 
-Extracts:
+When a final transcript is received:
+
+A backend edge function processes the text.
+
+AI model returns:
 
 sentiment_score (0–1)
 
-sentiment_label (positive / neutral / negative)
+sentiment_label ("positive", "neutral", "negative")
 
-mood (happy, stressed, calm, excited, etc.)
+mood (e.g., "happy", "stressed", "calm")
 
-keywords[] (3–5 important topic keywords)
+keywords[] (3–5 extracted topics)
 
-Powered by AI model through a backend edge function
+🎨 3. Generative Perlin Noise Visualization
 
-🌈 Generative Visualization (p5.js)
+Built using p5.js inside React.
 
-Dynamic Perlin Noise "Aura"
+Visualization dynamically responds to:
 
-Aura reacts to:
+Sentiment label → color hue
 
-Sentiment score → Energy & motion
+Sentiment score → motion + energy
 
-Sentiment label → Color hue mapping
+Keyword count → density + particle complexity
 
-Keywords → Density & glow
+Smooth transitions (lerp) for a "calm, liquid-like" effect.
 
-Smooth transitions using interpolation
+🧩 4. Modern UX Components
 
-💬 Keywords Highlight
+TranscriptDisplay: auto-scrolling, semi-transparent glass UI.
 
-Animated keyword pills
+KeywordsDisplay: animated keyword pills with fade-in + glow.
 
-First keyword gets a glowing badge
+Mood Badge: emoji + color-coded mood analyzer.
 
-Auto-fade and float-in animations
+Controls: Start/Stop recording with status indicator.
 
-🧩 Clear, Real-Time UI
+🛡 5. Error & Edge Case Handling
 
-Start/Stop button
+Handles Deepgram disconnects (reconnect logic).
 
-Live transcript panel
+Handles AI API failures with fallbacks.
 
-Mood badge with emoji
+Prevents duplicate keywords.
 
-Analyzing shimmer when waiting for AI response
+Validates empty or unclear transcripts.
 
-🏗️ Tech Stack
+Displays toast notifications for rate-limit issues.
+
+🏗 Architecture Overview
+Frontend (React + TypeScript + p5.js)
+
+Audio capture
+
+WebSocket stream to Deepgram
+
+Real-time UI components
+
+Perlin-noise visualization
+
+Backend (Edge Function / API)
+
+/analyze-sentiment endpoint
+
+Sends transcript → AI Model → structured JSON response
+
+Returns:
+
+{
+  "sentiment_score": 0.87,
+  "sentiment_label": "positive",
+  "mood": "excited",
+  "keywords": ["presentation", "success", "happy"]
+}
+
+External APIs
+
+Deepgram — real-time transcription
+
+AI Model (OpenAI / Gemini / Claude equivalent) — sentiment + keywords
+
+🔄 Data Flow (End-to-End)
+
+(Matches exactly the data flow in the PDF brief)
+
+User clicks Start
+
+React requests mic access
+
+Audio streamed → Deepgram WebSocket
+
+Deepgram returns:
+
+partial transcripts
+
+final transcripts
+
+On is_final: true:
+
+Frontend POSTs text → backend API
+
+Backend performs AI sentiment analysis
+
+AI returns structured JSON
+
+UI updates:
+
+aura visualization
+
+keyword pills
+
+mood badge
+
+React re-renders everything smoothly
+
+🛠 Tech Stack
 Frontend
 
 React + TypeScript
 
 Vite
 
-p5.js (custom generative art)
+p5.js (Perlin Noise visualization)
 
-Axios
+TailwindCSS
 
-Web Audio API
+Axios (HTTP calls)
 
-WebSockets
+Web Audio API + WebSocket
 
 Backend
 
-FastAPI (or Edge Function)
+Edge Function / API Route
 
-AI Model API for sentiment+keywords
+AI model integration (Gemini / OpenAI-compatible)
 
-JSON output parsing
+Third-Party APIs
 
-CORS-enabled
+Deepgram (Transcription API)
 
-APIs
-
-⭐ Deepgram — Transcription
-
-⭐ AI Model API — Sentiment, keywords, mood
-
-Project Structure
-/
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── AuraCanvas.tsx
-│   │   │   ├── KeywordsDisplay.tsx
-│   │   │   ├── SentimentMeter.tsx
-│   │   ├── hooks/
-│   │   │   ├── useDeepgram.ts
-│   │   │   ├── useSentimentAnalysis.ts
-│   │   ├── pages/
-│   │   │   ├── Index.tsx
-│   │   ├── index.css
-│   ├── package.json
-│   ├── vite.config.ts
-|
-├── backend/
-│   ├── app.py
-│   ├── requirements.txt
-|
+📦 Project Structure
+Sentiment_Analysis/
+│
+├── public/
+│   └── robots.txt
+│
+├── src/
+│   ├── components/       # AuraCanvas, KeywordsDisplay, SentimentMeter
+│   ├── hooks/            # useDeepgram, useSentimentAnalysis
+│   ├── pages/            # Index.tsx, NotFound.tsx
+│   ├── lib/              # utilities
+│   ├── types/            # TypeScript definitions
+│   ├── main.tsx          # entry file
+│   └── index.css         # global styles
+│
+├── supabase/
+│   └── functions/
+│       └── analyze-sentiment/
+│           └── index.ts  # backend sentiment logic
+│
+├── package.json
+├── tsconfig.json
+├── tailwind.config.js
 └── README.md
 
-🛠️ Local Development
-1️⃣ Backend
-cd backend
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn app:app --reload --port 8000
-
-2️⃣ Frontend
-cd frontend
+🧪 Running Locally
+1️⃣ Install dependencies
 npm install
+
+2️⃣ Add environment variables
+
+Create a .env file:
+
+VITE_DEEPGRAM_API_KEY=your_key_here
+AI_API_KEY=your_ai_key
+
+3️⃣ Run development server
 npm run dev
 
 
-Open:
+Project is available at:
+
 👉 http://localhost:5173
 
-🌈 How the Aura Visualization Works
-Sentiment Label	Color
-Positive	Gold / Warm tones
-Neutral	Cyan / Teal
-Negative	Deep blue / Violet
-Sentiment Score	Effect
-0.0–0.3	Slow, soft motion
-0.4–0.6	Balanced flow
-0.7–1.0	Fast, energetic, strong trails
+📤 Deployment
 
-Keywords affect:
+You can deploy the project on:
 
-Density
+Vercel (recommended for frontend)
 
-Glow effects
+Netlify
 
-Particle speed
+Render / Railway for backend functions
 
-🧪 Example Outputs
-Input:
+Just set the environment variables inside the platform dashboard.
 
-“I feel really happy today, everything is going great!”
+📝 Future Enhancements
 
-Output:
-{
-  "sentiment_score": 0.92,
-  "sentiment_label": "positive",
-  "mood": "happy",
-  "keywords": ["happy", "today", "great"]
-}
+Multi-speaker detection
 
+Emotion time-series graph
 
-Aura turns:
+Save conversation history
 
-Warm golden
+Animated 3D aura mode (Three.js)
 
-High energy
+WebRTC collaborative visualization
 
-Dense glowing lines
-
-🎯 What This Project Demonstrates
-
-✔ Full-stack engineering
-✔ Real-time async orchestration
-✔ WebSockets
-✔ AI model integration
-✔ Visualization engineering
-✔ UI/UX polish
-✔ Error handling & graceful fallbacks
-
-Perfect for:
-
-AI engineering interviews
-
-Full-stack assessments
-
-Creative coding portfolios
-
-Showcasing AI + visualization skills
-
-📄 License
-
-MIT License
-
-🙋‍♂️ Author
+👤 Author
 
 Sneh Patil
+Full-Stack Developer • AI Systems • Real-Time Applications

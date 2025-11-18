@@ -1,12 +1,10 @@
 /**
-
  * Architecture: Serverless function deployed on Supabase Edge Runtime 
  * Error Handling Strategy:
  * - Invalid input → Return neutral fallback
  * - Rate limits (429) → Return fallback with error message
  * - Out of credits (402) → Return fallback with payment message
  * - LLM failures → Log error, return neutral fallback
- * 
  * This ensures the frontend NEVER breaks, even if AI calls fail.
  */
 
@@ -53,7 +51,6 @@ serve(async (req) => {
     console.log("Analyzing text:", text);
 
     // This forces the LLM to return valid JSON in exactly the format we need
-    // Benefit: No parsing errors, guaranteed type safety
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {

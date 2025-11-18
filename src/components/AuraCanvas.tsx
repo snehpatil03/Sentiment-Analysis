@@ -8,29 +8,7 @@ interface AuraCanvasProps {
   keywords: string[];
 }
 
-/**
- * INTERVIEW NOTE: Dynamic Perlin Noise Visualization with p5.js
- * 
- * This component creates a full-screen "aura" that reacts to user sentiment:
- * 
- * Visual Algorithm:
- * 1. Creates a 2D Perlin noise flow field (smooth, organic randomness)
- * 2. Spawns 300 particles that follow the flow field vectors
- * 3. Particles leave trails creating fluid, animated patterns
- * 4. Color, speed, and energy map directly to sentiment analysis results
- * 
- * Sentiment Mapping:
- * - POSITIVE: Warm gold (hue 50°), high energy, fast flow
- * - NEGATIVE: Cool blue (hue 240°), low energy, slow flow  
- * - NEUTRAL: Cyan (hue 200°), medium energy, medium flow
- * - KEYWORDS: Each keyword adds energy boost (more motion/thickness)
- * 
- * Technical Details:
- * - Uses lerp() for smooth 60fps transitions 
- * - Particles wrap at edges for continuous motion
- * - HSB color mode for intuitive hue shifts
- * - Canvas resizes responsively to window
- */
+
 export const AuraCanvas = ({
   sentimentScore,
   sentimentLabel,

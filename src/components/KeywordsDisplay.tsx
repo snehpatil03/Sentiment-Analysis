@@ -38,7 +38,7 @@ export const KeywordsDisplay = ({ keywords }: KeywordsDisplayProps) => {
       </h2>
       <div className="flex flex-wrap gap-3">
         {displayedKeywords.map((item, index) => {
-          // Highlight the most recent (last) keyword as top priority
+          // Highlight the most recent keyword as top priority
           const isTopKeyword = index === displayedKeywords.length - 1;
           return (
             <Badge

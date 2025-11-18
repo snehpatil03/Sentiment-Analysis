@@ -31,7 +31,7 @@ const BreadcrumbItem = React.forwardRef<HTMLLIElement, React.ComponentPropsWitho
     <li ref={ref} className={cn("inline-flex items-center gap-1.5", className)} {...props} />
   ),
 );
-BreadcrumbItem.displayName = "BreadcrumbItem"
+BreadcrumbItem.displayName = "BreadcrumbItem";
 
 const BreadcrumbLink = React.forwardRef<
   HTMLAnchorElement,

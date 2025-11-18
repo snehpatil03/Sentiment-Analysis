@@ -43,4 +43,4 @@ export const TranscriptDisplay = ({
       </ScrollArea>
     </div>
   );
-}
+};

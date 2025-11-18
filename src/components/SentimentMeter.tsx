@@ -61,7 +61,7 @@ export const SentimentMeter = ({ sentiment, score }: SentimentMeterProps) => {
         <div className="w-full bg-muted/30 rounded-full h-3 overflow-hidden">
           <div 
             className={`h-full bg-gradient-to-r ${getSentimentColor()} smooth-transition`}
-            style={{ width: `${score * 100}%` }}
+            style={{ width: `${score * 100}%` }
           />
         </div>
       </div>

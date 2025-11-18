@@ -8,37 +8,9 @@ import { useDeepgram } from "@/hooks/useDeepgram";
 import { useSentimentAnalysis } from "@/hooks/useSentimentAnalysis";
 import { SentimentLabel, TranscriptEntry } from "@/types/sentiment";
 
-/**
- * INTERVIEW NOTE: Main Application Component - Sentiment Aura
- * 
- * This is the orchestration layer that connects all pieces:
- * 
- * FULL DATA FLOW:
- * 1. User clicks Start → useDeepgram opens mic + Deepgram WebSocket
- * 2. Audio streams continuously, VAD optimizes bandwidth
- * 3. Deepgram returns interim (partial) and final (complete) transcripts
- * 4. Final transcripts trigger useSentimentAnalysis hook
- * 5. Hook calls Supabase Edge Function → Lovable AI (Gemini 2.5 Flash)
- * 6. LLM returns: sentiment_score, sentiment_label, mood, keywords
- * 7. React state updates trigger re-renders of:
- *    - AuraCanvas (Perlin noise visualization)
- *    - KeywordsDisplay (animated keyword pills)
- *    - SentimentMeter (emoji + progress bar)
- *    - MoodBadge (current emotional state)
- * 8. All visual updates use smooth transitions (no jarring jumps)
- * 
- * ERROR HANDLING:
- * - LLM fails → Neutral fallback, app keeps working
- * - Mic denied → Toast error, graceful degradation
- * - Network issues → Automatic retry with backoff
- * 
- * PERFORMANCE:
- * - Async sentiment calls don't block transcription
- * - VAD reduces unnecessary API calls
- * - p5.js runs at 60fps in separate render loop
- */
+
 const Index = () => {
-  // INTERVIEW NOTE: Core application state
+ 
   const [transcripts, setTranscripts] = useState<TranscriptEntry[]>([]);
   const [interimTranscript, setInterimTranscript] = useState("");
   const [sentimentScore, setSentimentScore] = useState(0.5);
@@ -48,7 +20,6 @@ const Index = () => {
 
   const { analyzeSentiment, isAnalyzing } = useSentimentAnalysis();
 
-  // INTERVIEW NOTE: Central callback for handling Deepgram transcripts
   // This is where we distinguish interim vs final and trigger sentiment analysis
   const handleTranscript = useCallback(
     async (transcript: TranscriptEntry) => {
@@ -61,7 +32,7 @@ const Index = () => {
         setInterimTranscript("");
 
         try {
-          // INTERVIEW NOTE: Async sentiment analysis pipeline
+        
           // This doesn't block the UI - transcription continues in parallel
           console.log("[Sentiment] Analyzing final transcript...");
           const result = await analyzeSentiment(transcript.text);

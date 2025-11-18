@@ -15,7 +15,7 @@ export function Toaster() {
             </div>
             {action}
             <ToastClose />
-          </Toast>
+          </Toast
         );
       })}
       <ToastViewport />

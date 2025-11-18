@@ -2,22 +2,7 @@ import { useState, useRef, useCallback } from "react";
 import { TranscriptEntry } from "@/types/sentiment";
 import { useToast } from "@/hooks/use-toast";
 
-/**
- * INTERVIEW NOTE: Real-time Speech-to-Text with Deepgram WebSocket
- * 
- * This hook manages the entire audio pipeline:
- * 1. Requests microphone access from the browser
- * 2. Opens a WebSocket connection to Deepgram's streaming API
- * 3. Processes raw audio using Web Audio API (converts to PCM16 format)
- * 4. Implements Voice Activity Detection (VAD) to optimize bandwidth
- * 5. Receives interim and final transcripts from Deepgram
- * 6. Calls the provided callback with structured transcript data
- * 
- * Key Features:
- * - VAD: Only sends audio when speech is detected (reduces API costs)
- * - Real-time: Low-latency streaming with interim results
- * - Graceful error handling: Reconnection logic and user-friendly errors
- */
+
 export const useDeepgram = (
   onTranscript: (transcript: TranscriptEntry) => void
 ) => {
@@ -72,11 +57,7 @@ export const useDeepgram = (
         startRecording(stream, ws);
       };
 
-      // INTERVIEW NOTE: Handle Deepgram WebSocket messages
-      // Deepgram sends two types of transcripts:
-      // 1. Interim (is_final: false) - partial, may change as more audio arrives
-      // 2. Final (is_final: true) - complete, stable transcript for a segment
-      // We use finals to trigger sentiment analysis to avoid processing noise
+    
       ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
         console.log("Deepgram response:", data);
@@ -125,16 +106,14 @@ export const useDeepgram = (
   }, [onTranscript, toast]);
 
   const startRecording = (stream: MediaStream, ws: WebSocket) => {
-    // INTERVIEW NOTE: Web Audio API pipeline for processing microphone input
-    // We need to convert browser audio to PCM16 format for Deepgram
+  
     const audioContext = new AudioContext({ sampleRate: 16000 });
     audioContextRef.current = audioContext;
 
     const source = audioContext.createMediaStreamSource(stream);
     sourceRef.current = source;
 
-    // INTERVIEW NOTE: ScriptProcessorNode for real-time audio processing
-    // This gives us access to raw audio samples for VAD and format conversion
+  
     const processor = audioContext.createScriptProcessor(4096, 1, 1);
     processorRef.current = processor;
 
@@ -142,8 +121,7 @@ export const useDeepgram = (
       if (ws.readyState === WebSocket.OPEN) {
         const inputData = e.inputBuffer.getChannelData(0);
         
-        // INTERVIEW NOTE: Voice Activity Detection (VAD) algorithm
-        // Calculate Root Mean Square (RMS) to detect speech amplitude
+      
         let sum = 0;
         for (let i = 0; i < inputData.length; i++) {
           sum += inputData[i] * inputData[i];
